@@ -29,6 +29,10 @@ setup-aries:
 	$(eval DATA_PART=/dev/mmcblk0p26)
 	$(eval BOOTLOGO=0)
 
+setup-flo:
+	$(eval MKBOOTIMG_PARAMS=--cmdline 'console=ttyHSL0,115200,n8 androidboot.hardware=flo user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3' --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 )
+	$(eval DATA_PART=/dev/block/mmcblk0p30)
+
 zImage-mako:
 	$(error Please provide the mako zImage)
 
@@ -42,6 +46,9 @@ zImage-grouper:
 
 zImage-tilapia: zImage-grouper
 	mv zImage-grouper zImage-tilapia
+
+zImage-flo:
+	$(error Please provide the flo zImage)
 
 boot.img-$(DEVICE): zImage-$(DEVICE) initramfs.gz-$(DEVICE)
 	mkbootimg --kernel ./zImage-$(DEVICE) --ramdisk ./initramfs.gz-$(DEVICE) $(MKBOOTIMG_PARAMS) --output ./boot.img-$(DEVICE)
